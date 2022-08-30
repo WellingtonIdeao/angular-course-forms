@@ -6,10 +6,11 @@ import { AppComponent } from './app.component';
 
 import { DataFormComponent } from './data-form/data-form.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    DataFormComponent
+    DataFormComponent,
   ],
   imports: [
     BrowserModule,
