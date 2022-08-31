@@ -12,14 +12,7 @@ export class TemplateFormComponent implements OnInit {
 
   usuario: any = {
     nome: null,
-    email: null,
-    cep: null,
-    numero: null,
-    complemento: null,
-    rua: null,
-    bairro: null,
-    cidade: null,
-    estado: null
+    email: null
   }
 
   constructor(private http: HttpClient) { }
@@ -40,23 +33,66 @@ export class TemplateFormComponent implements OnInit {
       'is-invalid': this.verificaValidTouched(campo)
     };
   }
-  consultaCEP(cep: any): void {
+  consultaCEP(cep: any, form: any): void {
      //Nova variável "cep" somente com dígitos.
-    var cep = cep.replace(/\D/g, '');
+    if (cep!= null){ 
+      var cep = cep.replace(/\D/g, '');
 
      //Verifica se campo cep possui valor informado.
-     if (cep != "") {
-      //Expressão regular para validar o CEP.
-      var validacep = /^[0-9]{8}$/;
+      if (cep != "") {
+        //Expressão regular para validar o CEP.
+        var validacep = /^[0-9]{8}$/;
      
-      //Valida o formato do CEP.
-      if(validacep.test(cep)) {
-        this.http.get(`https://viacep.com.br/ws/${cep}/json`)
-        .pipe(map((dados: any) => dados))
-        .subscribe(dados => console.log(dados));  
-      }  
-     
-    }
-  }
+        //Valida o formato do CEP.
+        if(validacep.test(cep)) {
+          this.resetarDadosForm(form);
 
+          this.http.get(`https://viacep.com.br/ws/${cep}/json`)
+          .pipe(map((dados: any) => dados))
+          .subscribe(dados => this.populaDadosForm(dados, form));  
+        }  
+     
+      }
+    }  
+  }
+  populaDadosForm(dados: any, formulario: any ){
+    /* formulario.setValue(
+      {
+        nome: form.value.nome,
+        email: form.value.email,
+        Endereço:{
+          cep: dados.cep,
+          numero: '',
+          complemento: dados.complemento,
+          rua: dados.logradouro,
+          bairro: dados.bairro,
+          cidade: dados.localidade,
+          estado: dados.uf
+        }
+      }  
+    );*/
+    formulario.form.patchValue(
+      {
+        Endereço:{
+          complemento: dados.complemento,
+          rua: dados.logradouro,
+          bairro: dados.bairro,
+          cidade: dados.localidade,
+          estado: dados.uf
+        }
+      }
+    );
+  }
+  resetarDadosForm(formulario: any){
+    formulario.form.patchValue(
+    {
+      Endereço:{
+        complemento: null,
+        rua: null,
+        bairro: null,
+        cidade: null,
+        estado: null
+      }
+    });
+  }
 }

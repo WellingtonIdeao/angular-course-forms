@@ -1,10 +1,10 @@
-<div class="col-md-3">
-    <label for="estado" class="form-label">Estado</label>
-    <input type="text" class="form-control" id="estado"  name="estado" [(ngModel)]="usuario.estado" required #estado="ngModel"
-    [ngClass]="{
-        'is-invalid': !estado.valid && estado.touched
-    }"> <!-- ou [ngModel] = property binding-->
-    <div *ngIf="!estado.valid && estado.touched" class="alert alert-danger" role="alert">
-        Estado é obrigatório.
-    </div>
- </div>   
+nome: null,
+        email: null,
+        Endereço: {
+        cep: ,
+        numero: ,
+        complemento:,
+        rua: ,
+        bairro: ,
+        cidade: ,
+        estado: 
