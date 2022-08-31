@@ -28,6 +28,7 @@
         <div class="col-md-3">
             <label for="cep" class="form-label">CEP</label>
             <input type="text" class="form-control" id="cep" placeholder="00000-000" name="cep" [(ngModel)]="usuario.cep" required #cep="ngModel"
+            (blur)="consultaCEP(cep.value)"
             [ngClass]="aplicaCSSErro(cep)">
              <!-- ou [ngModel] = property binding-->
             <app-campo-control-erro
