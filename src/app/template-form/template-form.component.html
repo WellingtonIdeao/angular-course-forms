@@ -23,6 +23,7 @@
             </app-campo-control-erro>
         </div>
     </div>
+    <div ngModelGroup="Endereço">
     <div class="row mb-3">
         <div class="col-md-3">
             <label for="cep" class="form-label">CEP</label>
@@ -93,7 +94,7 @@
             </app-campo-control-erro>
          </div>    
     </div>
-
+    </div>
     <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Submit</button>    
     <app-form-debug [form]= "f"></app-form-debug>
 </form>
