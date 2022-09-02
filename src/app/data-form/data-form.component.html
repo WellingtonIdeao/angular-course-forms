@@ -1,14 +1,29 @@
 <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
-    <div class="row mb-3" >
+    <div class="row mb-3">
         <div class="col-sm-12">
             <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="nome" placeholder="Nome"  formControlName="nome">
+            <input type="text" class="form-control" id="nome" placeholder="Nome"  formControlName="nome"  [ngClass]="aplicaCSSErro('nome')">
+
+             <!--- [mostrarErro]="formulario.controls['nome'].invalid && formulario.controls['nome'].touched" --->
+            <app-campo-control-erro
+            [mostrarErro]="verificaValidTouched('nome')"
+            msgErro="Nome é obrigatório.">
+            </app-campo-control-erro>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-sm-12">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="nome@email.com" formControlName="email"> 
+            <input type="email" class="form-control" id="email" placeholder="nome@email.com" formControlName="email"  [ngClass]="aplicaCSSErro('email')">
+            <app-campo-control-erro
+            [mostrarErro]="verificaValidTouched('email')"
+            msgErro="Email é obrigatório.">
+            </app-campo-control-erro>
+           
+            <app-campo-control-erro
+            [mostrarErro]="verificaEmailiInvalid()" 
+            msgErro="Email é inválido.">
+            </app-campo-control-erro> 
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
