@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-data-form',
@@ -75,4 +76,73 @@ export class DataFormComponent implements OnInit {
       'is-invalid': this.verificaValidTouched(campo)
     };
   }
+  consultaCEP(): void {
+    //let cep = this.formulario.controls['endereco'].value['cep'];
+
+    let cep = this.formulario.get('endereco.cep')?.value;
+    //Nova variável "cep" somente com dígitos.
+   if (cep!= null){
+    cep = cep.replace(/\D/g, '');
+
+    //Verifica se campo cep possui valor informado.
+     if (cep != "") {
+       //Expressão regular para validar o CEP.
+       var validacep = /^[0-9]{8}$/;
+    
+       //Valida o formato do CEP.
+       if(validacep.test(cep)) {
+         this.resetarDadosForm();
+
+         this.http.get(`https://viacep.com.br/ws/${cep}/json`)
+         .pipe(map((dados: any) => dados))
+         .subscribe(dados => this.populaDadosForm(dados));  
+         
+       }  
+    
+     }
+   }  
+ }
+  resetarDadosForm(){
+    this.formulario.patchValue(
+    {
+      endereco:{
+        complemento: null,
+        rua: null,
+        bairro: null,
+        cidade: null,
+        estado: null
+      }
+    });
+  }
+  populaDadosForm(dados: any){
+    /*this.formulario.setValue(
+      {
+        nome: "",
+        email: "",
+        endereco:{
+          cep: dados.cep,
+          numero: '',
+          complemento: dados.complemento,
+          rua: dados.logradouro,
+          bairro: dados.bairro,
+          cidade: dados.localidade,
+          estado: dados.uf
+        }
+      }  
+    );*/
+
+    this.formulario.patchValue(
+      {
+        endereco:{
+          complemento: dados.complemento,
+          rua: dados.logradouro,
+          bairro: dados.bairro,
+          cidade: dados.localidade,
+          estado: dados.uf
+        }
+      }
+    );
+    //this.formulario.get('nome')?.setValue('guga');
+  }
+
 }
