@@ -16,19 +16,24 @@ export class DataFormComponent implements OnInit {
   ngOnInit(): void {
     /*this.formulario = new FormGroup({
       nome: new FormControl(null),
-      email: new FormControl(null)
-    }); */
+      email: new FormControl(null),
+      endereco: new FormGroup({
+        cep: new FormControl(null)
+      })
+    });*/ 
 
     this.formulario = this.formBuilder.group({
       nome: [null, Validators.required],
       email: [null, [ Validators.required, Validators.email]],
-      cep: [null, Validators.required],
-      numero: [null, Validators.required],
-      complemento: [null],
-      rua: [null, Validators.required],
-      bairro: [null, Validators.required],
-      cidade: [null, Validators.required],
-      estado: [null, Validators.required]
+      endereco: this.formBuilder.group({
+        cep: [null, Validators.required],
+        numero: [null, Validators.required],
+        complemento: [null],
+        rua: [null, Validators.required],
+        bairro: [null, Validators.required],
+        cidade: [null, Validators.required],
+        estado: [null, Validators.required]
+      })
     });
 
     //[Validators.required, Validators.minLength(3), Validators.maxLength(20)]
@@ -54,14 +59,14 @@ export class DataFormComponent implements OnInit {
   }
 
   verificaValidTouched(campo: string): any{
-    return this.formulario.controls[campo].invalid && this.formulario.controls[campo].touched;
-    // return this.formulario.get(campo)?.invalid && this.formulario.get(campo)?.touched;
+    //return this.formulario.controls[campo].invalid && this.formulario.controls[campo].touched;
+     return this.formulario.get(campo)?.invalid && this.formulario.get(campo)?.touched;
   }
 
   verificaEmailiInvalid(): any{
-    let campoEmail = this.formulario.controls['email'];
-    //let campoEmail = this.formulario.get('email');
-    if (campoEmail.errors){
+    //let campoEmail = this.formulario.controls['email'];
+    let campoEmail = this.formulario.get('email');
+    if (campoEmail?.errors){
       return campoEmail.errors['email'] && campoEmail.touched;
     }
   }
