@@ -1,9 +1,12 @@
-import { DropdownService } from './../shared/services/dropdown.service';
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+
 import { IEstado } from '../shared/models/IEstado';
+import { DropdownService } from './../shared/services/dropdown.service';
+import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 
 @Component({
   selector: 'app-data-form',
@@ -18,7 +21,8 @@ export class DataFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private dropDownService: DropdownService
+    private dropDownService: DropdownService,
+    private cepService :ConsultaCepService
   ) { }
 
   ngOnInit(): void {
@@ -106,28 +110,12 @@ export class DataFormComponent implements OnInit {
     //let cep = this.formulario.controls['endereco'].value['cep'];
 
     let cep = this.formulario.get('endereco.cep')?.value;
-    //Nova variável "cep" somente com dígitos.
-    if (cep != null) {
-      cep = cep.replace(/\D/g, '');
-
-      //Verifica se campo cep possui valor informado.
-      if (cep != "") {
-        //Expressão regular para validar o CEP.
-        var validacep = /^[0-9]{8}$/;
-
-        //Valida o formato do CEP.
-        if (validacep.test(cep)) {
-          this.resetarDadosForm();
-
-          this.http.get(`https://viacep.com.br/ws/${cep}/json`)
-            .pipe(map((dados: any) => dados))
-            .subscribe(dados => this.populaDadosForm(dados));
-
-        }
-
-      }
+    if (cep!= null && cep !== ''){
+      this.cepService.consultaCEP(cep)?.subscribe(dados => this.populaDadosForm(dados));
+  
     }
   }
+  
   resetarDadosForm() {
     this.formulario.patchValue(
       {
