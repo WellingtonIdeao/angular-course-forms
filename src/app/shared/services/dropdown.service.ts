@@ -36,4 +36,11 @@ export class DropdownService {
       {nome: 'python', desc: 'Python'}
     ]
   }
+
+  getNewsletter(){
+    return [
+      {valor: 's', desc: 'Sim'},
+      {valor: 'n', desc: 'Não'}
+    ]
+  }
 }
