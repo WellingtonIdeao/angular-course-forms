@@ -55,7 +55,6 @@ export class DataFormComponent implements OnInit {
     //console.log(this.formulario);
     if (this.formulario.valid) {
       this.http.post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
-        .pipe(res => res)
         .subscribe(
           dados => {
             console.log(dados);
