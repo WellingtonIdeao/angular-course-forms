@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, ValidatorFn } from "@angular/forms";
+import { AbstractControl, FormArray, FormControl, ValidatorFn } from "@angular/forms";
 
 export class FormValidations {
     static requiredMinCheckbox(min: number = 1): ValidatorFn {
@@ -21,5 +21,16 @@ export class FormValidations {
             throw new Error('formArray is not an instance of FormArray');
         }
         return validator;
+    }
+
+    static cepValidator(control: FormControl){
+        const cep = control.value;
+        if (cep && cep!= '') {
+            const validacep1 = /^[0-9]{8}$/;
+            const validacep2 = /^[0-9]{5}-[0-9]{3}$/;
+            let valido = validacep1.test(cep) || validacep2.test(cep); 
+            return  valido ? null : {cepInvalido: true};  
+        }
+        return null;
     }
 }

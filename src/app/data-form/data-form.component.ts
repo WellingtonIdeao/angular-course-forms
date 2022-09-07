@@ -54,7 +54,7 @@ export class DataFormComponent implements OnInit {
       nome: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
       endereco: this.formBuilder.group({
-        cep: [null, Validators.required],
+        cep: [null, [Validators.required, FormValidations.cepValidator]],
         numero: [null, Validators.required],
         complemento: [null],
         rua: [null, Validators.required],
@@ -93,7 +93,7 @@ export class DataFormComponent implements OnInit {
       frameworks: valueSubmit.frameworks.map((v: boolean, i: number)=> v? this.frameworks[i]: null).
       filter((v: boolean)=> v != null)
     })
-    //console.log(valueSubmit);
+    console.log(this.formulario);
 
 
     if (this.formulario.valid) {
@@ -130,8 +130,20 @@ export class DataFormComponent implements OnInit {
 
   verificaValidTouched(campo: string): any {
     //return this.formulario.controls[campo].invalid && this.formulario.controls[campo].touched;
-    return this.formulario.get(campo)?.invalid && (this.formulario.get(campo)?.touched || this.formulario.get(campo)?.dirty);
+
+    return (
+      this.formulario.get(campo)?.invalid &&
+      (this.formulario.get(campo)?.touched || this.formulario.get(campo)?.dirty)
+    );
   }
+
+  verificaRequired(campo: string): any {
+    return (
+      this.formulario.get(campo)?.hasError('required') &&
+      (this.formulario.get(campo)?.touched || this.formulario.get(campo)?.dirty)
+    );
+  }
+
 
   verificaEmailiInvalid(): any {
     //let campoEmail = this.formulario.controls['email'];
