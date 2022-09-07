@@ -146,19 +146,11 @@
                     <input id="checkboxes{{i}}" class="form-check-input" type="checkbox"  [ngClass]="aplicaCSSErro('frameworks')" [formControlName]="i">
                     <label for="checkboxes{{i}}" class="form-check-label">{{ frameworks[i] }}</label>
                 </div>
+                <app-campo-control-erro
+                    [mostrarErro]="!formulario.get('frameworks')?.valid"
+                    msgErro="Selecione 1 opção.">
+                </app-campo-control-erro>
             </div>
-                <!--<div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox"  [ngClass]="aplicaCSSErro('frameworks')" formControlName="{{1}}">
-                    <label class="form-check-label">{{frameworks[1]}}</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox"  [ngClass]="aplicaCSSErro('frameworks')" formControlName="{{2}}">
-                    <label class="form-check-label">{{frameworks[2]}}</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox"  [ngClass]="aplicaCSSErro('frameworks')" formControlName="{{3}}">
-                    <label class="form-check-label">{{frameworks[3]}}</label>
-                </div> -->       
         </div>
     </div>
     <div class="row mt-5">

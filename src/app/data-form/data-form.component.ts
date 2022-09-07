@@ -2,12 +2,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
 import { IEstado } from '../shared/models/IEstado';
 import { DropdownService } from './../shared/services/dropdown.service';
 import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { Observable } from 'rxjs';
+import { FormValidations } from '../shared/form-validations';
 
 @Component({
   selector: 'app-data-form',
@@ -74,7 +74,7 @@ export class DataFormComponent implements OnInit {
   }
   buildFrameworks(){
     const values = this.frameworks.map(v => new FormControl(false));
-    return this.formBuilder.array(values);
+    return this.formBuilder.array(values, FormValidations.requiredMinCheckbox(1));
     /*return this.formBuilder.array([
       new FormControl(false),
       new FormControl(false),
@@ -93,7 +93,7 @@ export class DataFormComponent implements OnInit {
       frameworks: valueSubmit.frameworks.map((v: boolean, i: number)=> v? this.frameworks[i]: null).
       filter((v: boolean)=> v != null)
     })
-    console.log(valueSubmit);
+    //console.log(valueSubmit);
 
 
     if (this.formulario.valid) {
@@ -208,6 +208,6 @@ export class DataFormComponent implements OnInit {
 
   setarTecnologias(){
     this.formulario.get('tecnologias')?.setValue(['java', 'python', 'javascript']);
-  }
+  }  
 
 }
