@@ -128,22 +128,48 @@
             </div>        
         </div>
     </div>
-    <div class="col-md-4" >
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" formControlName="termos" [ngClass]="aplicaCSSErro('termos')">
-            <label class="form-check-label" for="inlineCheckbox1">Aceito os termos.</label>
-            <app-campo-control-erro
-            [mostrarErro]="!formulario.get('termos')?.valid"
-            msgErro="Por favor, aceite os termos.">
-            </app-campo-control-erro>
+    <div class="row">
+        <div class="col-md-4" >
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" formControlName="termos" [ngClass]="aplicaCSSErro('termos')">
+                <label class="form-check-label" for="inlineCheckbox1">Aceito os termos.</label>
+                <app-campo-control-erro
+                [mostrarErro]="!formulario.get('termos')?.valid"
+                msgErro="Por favor, aceite os termos.">
+                </app-campo-control-erro>
+            </div>
         </div>
-    </div>                
-    <!--<button type="submit" class="btn btn-primary" [disabled]="formulario.invalid">Submit</button> -->    
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="button" class="btn btn-default" (click)="resetar()">Cancelar</button>
-    <button type="button" class="btn btn-info" (click)="setarCargo()">Cargo</button>
-    <button type="button" class="btn btn-info" (click)="setarTecnologias()">Tecnologia</button>         
-    
+        <div class="col-md-4">
+            <label for="frameworks" class="form-label">Frameworks</label>
+            <div id="frameworks">
+                <div class="form-check form-check-inline" formArrayName="frameworks" *ngFor="let item of frameworksFormArray.controls; let i=index">
+                    <input id="checkboxes{{i}}" class="form-check-input" type="checkbox"  [ngClass]="aplicaCSSErro('frameworks')" [formControlName]="i">
+                    <label for="checkboxes{{i}}" class="form-check-label">{{ frameworks[i] }}</label>
+                </div>
+            </div>
+                <!--<div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox"  [ngClass]="aplicaCSSErro('frameworks')" formControlName="{{1}}">
+                    <label class="form-check-label">{{frameworks[1]}}</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox"  [ngClass]="aplicaCSSErro('frameworks')" formControlName="{{2}}">
+                    <label class="form-check-label">{{frameworks[2]}}</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox"  [ngClass]="aplicaCSSErro('frameworks')" formControlName="{{3}}">
+                    <label class="form-check-label">{{frameworks[3]}}</label>
+                </div> -->       
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">                           
+            <!--<button type="submit" class="btn btn-primary" [disabled]="formulario.invalid">Submit</button> -->    
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-default" (click)="resetar()">Cancelar</button>
+            <button type="button" class="btn btn-info" (click)="setarCargo()">Cargo</button>
+            <button type="button" class="btn btn-info" (click)="setarTecnologias()">Tecnologia</button>         
+        </div>
+    </div>
     <app-form-debug [form]= "formulario"></app-form-debug>
 </form>
 
