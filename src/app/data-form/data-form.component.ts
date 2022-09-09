@@ -54,7 +54,7 @@ export class DataFormComponent implements OnInit {
     });*/
 
     this.formulario = this.formBuilder.group({
-      nome: [null, Validators.required],
+      nome: [null, [Validators.required,Validators.minLength(3), Validators.maxLength(5)]],
       email: [null, [Validators.required, Validators.email], [this.validarEmail.bind(this)]],
       confirmaEmail: [null, FormValidations.equalsTo('email')],
       endereco: this.formBuilder.group({
@@ -97,7 +97,7 @@ export class DataFormComponent implements OnInit {
       frameworks: valueSubmit.frameworks.map((v: boolean, i: number)=> v? this.frameworks[i]: null).
       filter((v: boolean)=> v != null)
     })
-    console.log(this.formulario);
+   // console.log(this.formulario);
 
 
     if (this.formulario.valid) {
