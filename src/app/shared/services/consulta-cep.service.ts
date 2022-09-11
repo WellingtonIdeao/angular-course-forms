@@ -11,6 +11,7 @@ export class ConsultaCepService {
   constructor(private http: HttpClient) { }
 
   consultaCEP(cep: string): Observable<Object> {
+    console.log(cep);
   //Nova variável "cep" somente com dígitos.
     if (cep != null) {
       cep = cep.replace(/\D/g, '');

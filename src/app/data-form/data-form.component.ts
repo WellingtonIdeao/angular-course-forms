@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { IEstado } from '../shared/models/IEstado';
 import { DropdownService } from './../shared/services/dropdown.service';
 import { ConsultaCepService } from '../shared/services/consulta-cep.service';
-import { Observable } from 'rxjs';
+import { empty, Observable } from 'rxjs';
 import { FormValidations } from '../shared/form-validations';
 import { VerificaEmailService } from './services/verifica-email.service';
 
@@ -71,11 +71,22 @@ export class DataFormComponent implements OnInit {
       newsletter: ['s'],
       termos: [null, Validators.requiredTrue],
       frameworks: this.buildFrameworks()
-
-    });
-
+    });  
     //[Validators.required, Validators.minLength(3), Validators.maxLength(20)]
+    
+    this.formulario.get('endereco.cep')?.statusChanges
+    .pipe(
+      distinctUntilChanged(),
+      tap(value => console.log("status do cep:", value)),
+      // returna um Observable.
+      switchMap(status => status === 'VALID'? this.cepService.consultaCEP(this.formulario.get('endereco.cep')?.value)
+      : empty() 
+      )
+    )  
+    //caso o Observable acima retorne/tenha um valor, popula os dados.
+    .subscribe((dados: any) => dados ? this.populaDadosForm(dados) : {});
   }
+
   buildFrameworks(){
     const values = this.frameworks.map(v => new FormControl(false));
     return this.formBuilder.array(values, FormValidations.requiredMinCheckbox(1));
@@ -164,6 +175,7 @@ export class DataFormComponent implements OnInit {
   consultaCEP(): void {
     //let cep = this.formulario.controls['endereco'].value['cep'];
 
+    
     let cep = this.formulario.get('endereco.cep')?.value;
     if (cep!= null && cep !== ''){
       this.cepService.consultaCEP(cep)?.subscribe(dados => this.populaDadosForm(dados));
