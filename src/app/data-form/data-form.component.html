@@ -86,9 +86,10 @@
             </div>
             <div class="col-md-4">
                 <label for="cidade" class="form-label">Cidade</label>
-                <input type="text" class="form-control" id="cidade" formControlName="cidade"
+                <select class="form-control" id="cidade" formControlName="cidade"
                     [ngClass]="aplicaCSSErro('endereco.cidade')">
-
+                    <option *ngFor="let cidade of cidades" [value]="cidade.nome">{{cidade.nome}}</option>
+                </select>
                 <app-error-msg [control]="$any(formulario.get('endereco.cidade'))" label="Cidade">
                 </app-error-msg>
             </div>
@@ -96,7 +97,7 @@
                 <label for="estado" class="form-label">Estado</label>
                 <select class="form-control" id="estado" formControlName="estado"
                     [ngClass]="aplicaCSSErro('endereco.estado')">
-                    <option *ngFor="let estado of estados | async" [value]="estado.sigla">{{estado.nome}}</option>
+                    <option *ngFor="let estado of estados" [value]="estado.sigla">{{estado.nome}}</option>
                 </select>
                 <app-error-msg [control]="$any(formulario.get('endereco.estado'))" label="Estado">
                 </app-error-msg>

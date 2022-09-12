@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { IEstado } from '../models/IEstado';
 import { Observable } from 'rxjs';
 
+import { IEstado } from '../models/IEstado';
+import { ICidade } from '../models/ICidade';
 
 
 @Injectable({
@@ -18,6 +19,15 @@ export class DropdownService {
     /*return this.http.get<IEstado[]>('assets/dados/estadobr.json').pipe(
       map (res => res));*/
     return this.http.get<IEstado[]>('assets/dados/estadobr.json');
+  }
+
+  getCidades(idCidade: number | Observable<never>): Observable<ICidade[]>{
+    /*return this.http.get<IEstado[]>('assets/dados/estadobr.json').pipe(
+      map (res => res));*/
+    return this.http.get<ICidade[]>('assets/dados/cidades.json')
+    .pipe(
+      map(cidades => cidades.filter(c => c.estado == idCidade))
+    );
   }
 
   getCargos(){

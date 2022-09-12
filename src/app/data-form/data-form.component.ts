@@ -10,6 +10,7 @@ import { empty, Observable } from 'rxjs';
 import { FormValidations } from '../shared/form-validations';
 import { VerificaEmailService } from './services/verifica-email.service';
 import { BaseFormComponent } from './../shared/base-form/base-form.component';
+import { ICidade } from '../shared/models/ICidade';
 
 @Component({
   selector: 'app-data-form',
@@ -19,8 +20,9 @@ import { BaseFormComponent } from './../shared/base-form/base-form.component';
 export class DataFormComponent extends BaseFormComponent implements OnInit {
  
   //formulario!: FormGroup;
-  //estados!: IEstado[];
-  estados!: Observable<IEstado[]>
+  estados!: IEstado[];
+  cidades !: ICidade[];
+  //estados!: Observable<IEstado[]>
   cargos!: any[];
   tecnologias!: any[];
   newsletterOp!: any[];
@@ -40,7 +42,11 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
   override ngOnInit(): void {
 
     this.verificaEmailService.verficarEmail('email@mail.com').subscribe();
-    this.estados = this.dropDownService.getEstadosBr();
+    //this.estados = this.dropDownService.getEstadosBr();
+    this.dropDownService.getEstadosBr()
+    .subscribe((dados: IEstado[]) => this.estados = dados);
+
+
     this.cargos = this.dropDownService.getCargos();
     this.tecnologias = this.dropDownService.getTecnologias();
     this.newsletterOp = this.dropDownService.getNewsletter();
@@ -88,6 +94,17 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
     )  
     //caso o Observable acima retorne/tenha um valor, popula os dados.
     .subscribe((dados: any) => dados ? this.populaDadosForm(dados) : {});
+    
+    this.formulario.get('endereco.estado')?.valueChanges
+    .pipe(
+      tap(estado => console.log("Novo estado:", estado )),
+      map(estado => this.estados.filter(e => e.sigla === estado)),
+      map(estados => estados && estados.length > 0 ? estados[0].id : empty()),
+      switchMap((estadoId: number | Observable<never>) =>  this.dropDownService.getCidades(estadoId)),
+      tap(console.log)
+    )
+    .subscribe((cidades: ICidade[]) => this.cidades = cidades );
+    //this.dropDownService.getCidades(8).subscribe(console.log)
   }
 
   buildFrameworks(){
